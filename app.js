@@ -1,4 +1,10 @@
-var PORT = 3333
+var PORT = 3333;
+var RedisOptions = {
+  host : '127.0.0.1',
+  port : '6379',
+  ttl  : 30*60,
+  prefix : 'pdf-session_'
+};
 
 var express = require('express');
 var path = require('path');
@@ -9,6 +15,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer'); 
 var upload = multer();
+var uuid = require('uuid');
+var redis = require("redis");
+var RedisStore = require('connect-redis')(session);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -28,6 +37,24 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(upload.array());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({ 
+  genid: function(req) {
+    return uuid.v1();
+  },
+  secret: 'keyboard cat', 
+  store: new RedisStore(RedisOptions),
+  cookie: { 
+    maxAge: 60000 
+  }
+}));
+
+app.use(function (req, res, next) {
+  if (!req.session) {
+    return next(new Error('oh no')) // handle error
+  }
+  next() // otherwise continue
+})
 
 app.use('/', routes);
 app.use('/users', users);
