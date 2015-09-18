@@ -215,4 +215,5 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-./node_modules
+#my settings
+/node_modules/*
