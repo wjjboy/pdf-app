@@ -16,7 +16,7 @@ var bodyParser = require('body-parser');
 var multer = require('multer'); 
 var upload = multer();
 var uuid = require('uuid');
-var redis = require("redis");
+//var redis = require("redis");
 var RedisStore = require('connect-redis')(session);
 
 var routes = require('./routes/index');
@@ -39,22 +39,28 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ 
+  name: 'pdfsession.sid',
   genid: function(req) {
     return uuid.v1();
   },
+  //Forces the session to be saved back to the session store
+  //connect-redis will touch it
+  resave: false,
+  saveUninitialized: false,
   secret: 'keyboard cat', 
   store: new RedisStore(RedisOptions),
   cookie: { 
-    maxAge: 60000 
+    maxAge: 30*60*1000 
   }
 }));
 
+// catch lose session error handler
 app.use(function (req, res, next) {
   if (!req.session) {
-    return next(new Error('oh no')) // handle error
+    return next(new Error('redis session null')) // handle error
   }
   next() // otherwise continue
-})
+});
 
 app.use('/', routes);
 app.use('/users', users);
