@@ -1,13 +1,13 @@
 {
   "name"             : "pdf-app",
-  "cwd" 			 : "D:\pdf-app",
+  "cwd" 			       : "D:\pdf-app",
   "script"           : "app.js",
   "log_date_format"  : "YYYY-MM-DD HH:mm:ss",
   "instances"        : 2, //or 0 => 'max'
   "min_uptime"       : "200s", // 200 seconds, defaults to 1000
   "max_restarts"     : 5, // defaults to 15
   "max_memory_restart": "100M", // 1 megabytes, e.g.: "2G", "10M", "100K", 1024 the default unit is byte.
-  "watch"            : true,
+  "watch"            : false,
   "merge_logs"       : true,
   "exec_interpreter" : "node",
   "exec_mode"        : "cluster",

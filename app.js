@@ -1,10 +1,4 @@
-var PORT = 3333;
-var RedisOptions = {
-  host : '127.0.0.1',
-  port : '6379',
-  ttl  : 30*60,
-  prefix : 'pdf-session_'
-};
+var config = require('./config');
 
 var express = require('express');
 var path = require('path');
@@ -48,16 +42,16 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   secret: 'keyboard cat', 
-  store: new RedisStore(RedisOptions),
+  store: new RedisStore(config.RedisOptions),
   cookie: { 
-    maxAge: 30*60*1000 
+    maxAge: config.sessionTime*1000 
   }
 }));
 
 // catch lose session error handler
 app.use(function (req, res, next) {
   if (!req.session) {
-    return next(new Error('redis session null')) // handle error
+    return next(new Error('session null')) // handle error
   }
   next() // otherwise continue
 });
@@ -97,7 +91,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var server = app.listen(PORT, function () {
+var server = app.listen(config.port, function () {
   var host = server.address().address;
   var port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
