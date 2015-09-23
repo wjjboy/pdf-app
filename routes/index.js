@@ -1,41 +1,68 @@
+var ejs = require('ejs');
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  var query = req.query;
-  var user = query.user;
-  var password = query.password;  
-  var sess = req.session;
-  if(sess.login){
-    sess.view ++;
-    res.end('Express viewTime' + sess.view);
-  }else{
-    if(user && password){
-      if('wjj' == user && 'pdf' == password){
-        sess.login = true;
-        if(sess.view){
-            sess.view ++ ;
-        }else{
-            sess.view = 1;
-        }
-        res.end('Express viewTime' + sess.view);
-      }else{
-        res.end('login error!');
-      }
-    }else{
-      res.end('login error!');
-    }
-  }
-  /*console.log('sessionId:' + sess.id + ' views:' + sess.view);
-  if(sess.view){
-    sess.view ++ ;
-  }else{
-    sess.view = 1;
-  }*/
-  
-  //res.render('index', { title: 'Express viewTime' + sess.view });
-  
+//url mapping
+router.get('/',function(req, res, next) {
+     res.redirect('/index');
 });
+router.get('/index', index);
+router.get('/login', doLogin);
+router.get('/logout', doLogout);
 
+
+
+function index(req, res, next) {
+    var session = req.session;
+    if(session.user){
+        if(session.view){
+            session.view ++ ;
+        }else{
+            session.view = 1;
+        }
+        res.render('home', { view: session.view});
+    }else{
+        res.render('index');
+    }
+}
+
+function doLogin(req, res, next){
+    // 校验
+    req.checkQuery('user', "用户名不能为空").notEmpty();
+    req.checkQuery('password', "密码不能为空").notEmpty();
+    var errors = req.validationErrors();
+    if(errors && errors.length>0)
+    {
+      var ermsg = [];
+      for(var i=0;i<errors.length;i++)
+      {
+        ermsg.push(errors[i].msg);
+      }
+      var json={title:'请先登录',error:ermsg.join("\n")};
+      res.render('index', json);
+      return;
+    }
+    var user = req.query.user;
+    var password = req.query.password;  
+    var ip = req.ip;
+    var session = req.session;
+    if('wjj' == user && 'pdf' == password){
+        session.user = user;
+        if(session.view){
+            session.view ++ ;
+        }else{
+            session.view = 1;
+        }
+        res.render('home', { view: session.view});
+    }else{
+        res.end('login error!');
+    }
+}
+
+function doLogout(req, res, next){
+    req.session.destroy(function(err) {
+         new Error(err);
+    });
+    res.redirect('/index');
+}
 module.exports = router;
