@@ -28,8 +28,7 @@ function createPDF(req, res, next) {
 	}else{
 		res.status(400);
 		res.render('error', {
-			message: 'url not be null',
-			error: {}
+			error:  'url not be null',
 		});
 	}
 }

@@ -7,11 +7,9 @@
 
 <body>
 
-<form action="/login">
-	<input type="text" name="user"/>
-	<input type="password" name="password"/>
-	<button type="submit">登录</button>
-</form>
+<h1>Error:<%= error.message%></h1>
+<p><%= error.status%></p>
+<div><%- error.stack.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')%></div>
 
 </body>
 </html>
