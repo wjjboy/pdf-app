@@ -9,7 +9,8 @@ var config = {
 		port : '6379',
 		ttl  : this.sessionTime,
 		prefix : 'pdf-session_'
-	}
+	},
+	wkhtmltopdfPath : 'D:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
 }
 
 module.exports = config;

@@ -1,4 +1,4 @@
-var ejs = require('ejs');
+﻿var ejs = require('ejs');
 var express = require('express');
 var router = express.Router();
 
@@ -33,12 +33,12 @@ function doLogin(req, res, next){
     var errors = req.validationErrors();
     if(errors && errors.length>0)
     {
-      var ermsg = [];
+      var errmsg = [];
       for(var i=0;i<errors.length;i++)
       {
-        ermsg.push(errors[i].msg);
+        errmsg.push(errors[i].msg);
       }
-      var json={title:'请先登录',error:ermsg.join("\n")};
+      var json={title:'请先登录',error:errmsg.join("\n")};
       res.render('index', json);
       return;
     }

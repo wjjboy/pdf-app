@@ -1,7 +1,9 @@
-var wkhtmltopdfPath = 'D:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe';
 var express = require('express');
-var router = express.Router();
 var wkhtmltopdf = require('wkhtmltopdf');
+var config = require('../config');
+var router = express.Router();
+
+var wkhtmltopdfPath = config.wkhtmltopdfPath;
 
 //url mapping
 router.post('/create', createPDF);
