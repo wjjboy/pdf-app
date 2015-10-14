@@ -13,9 +13,8 @@ Desktop.ini
 *~
 
 # npm
-typings
-tsd.json
 .vscode
+typings
 node_modules
 *.log
 *.gz
