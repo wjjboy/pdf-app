@@ -12,8 +12,10 @@ Desktop.ini
 .directory
 *~
 
-
 # npm
+typings
+tsd.json
+.vscode
 node_modules
 *.log
 *.gz
