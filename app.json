@@ -1,6 +1,6 @@
 {
   "name"             : "pdf-app",
-  "cwd" 			       : "D:\pdf-app",
+  "cwd" 			       : "d:/GitHub/pdf-app",
   "script"           : "app.js",
   "log_date_format"  : "YYYY-MM-DD HH:mm:ss",
   "instances"        : 2, //or 0 => 'max'
